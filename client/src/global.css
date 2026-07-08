@@ -1,0 +1,233 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+  --color-bg: #0a0a0a;
+  --color-surface: #111111;
+  --color-surface-2: #161616;
+  --color-border: #1f1f1f;
+  --color-border-strong: #2a2a2a;
+  --color-accent: #16a34a;
+  --color-accent-soft: rgba(22, 163, 74, 0.12);
+  --color-accent-foreground: #ffffff;
+  --color-amber: #f59e0b;
+  --color-amber-soft: rgba(245, 158, 11, 0.12);
+  --color-text-primary: #fafafa;
+  --color-text-muted: #71717a;
+  --color-text-subtle: #52525b;
+  --color-danger: #ef4444;
+  --color-danger-soft: rgba(239, 68, 68, 0.12);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+}
+
+
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "cv11";
+  letter-spacing: -0.005em;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+::selection {
+  background-color: var(--color-accent-soft);
+  color: var(--color-text-primary);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 999px;
+  border: 2px solid var(--color-bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: var(--font-sans);
+}
+
+input,
+textarea,
+select {
+  font-family: var(--font-sans);
+}
+
+
+
+.nexus-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.nexus-card-sm {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.nexus-surface-2 {
+  background-color: var(--color-surface-2);
+}
+
+/* subtle hero gradient */
+.nexus-hero-gradient {
+  background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(22, 163, 74, 0.10), transparent 60%),
+    radial-gradient(900px 400px at 90% 0%, rgba(22, 163, 74, 0.05), transparent 55%),
+    var(--color-bg);
+}
+
+/* focus ring */
+.nexus-focus:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent);
+}
+
+/* auto-resize textarea helper — set height via JS */
+.nexus-textarea {
+  resize: none;
+  overflow: hidden;
+  min-height: 44px;
+  max-height: 200px;
+}
+
+/* skeleton shimmer */
+.nexus-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 0%,
+    var(--color-surface-2) 50%,
+    var(--color-surface) 100%
+  );
+  background-size: 200% 100%;
+  animation: nexus-shimmer 1.4s linear infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes nexus-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* typing dots */
+.nexus-typing-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 0 2px;
+  border-radius: 999px;
+  background-color: var(--color-text-muted);
+  animation: nexus-typing 1.2s infinite ease-in-out;
+}
+.nexus-typing-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.nexus-typing-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes nexus-typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+
+/* module pill state colors via custom classes */
+.nexus-pill-pending {
+  background-color: var(--color-surface-2);
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+}
+.nexus-pill-active {
+  background-color: var(--color-amber-soft);
+  color: var(--color-amber);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+.nexus-pill-done {
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent);
+  border-color: rgba(22, 163, 74, 0.3);
+}
+
+/* status badge colors */
+.nexus-status-not_started {
+  background-color: var(--color-surface-2);
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+}
+.nexus-status-in_progress {
+  background-color: var(--color-amber-soft);
+  color: var(--color-amber);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+.nexus-status-completed {
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent);
+  border-color: rgba(22, 163, 74, 0.3);
+}
