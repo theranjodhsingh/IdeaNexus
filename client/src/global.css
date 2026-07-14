@@ -113,12 +113,14 @@ select {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
+  padding: 1.5rem;
 }
 
 .nexus-card-sm {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
+  padding: 1rem;
 }
 
 .nexus-surface-2 {

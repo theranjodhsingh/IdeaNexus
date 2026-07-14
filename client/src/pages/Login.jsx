@@ -6,6 +6,7 @@ import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import { api, getErrorMessage } from '../api/axios';
 import { useAuth } from '../hooks/useAuth';
+import logoSrc from '../assets/logo/logo.png';
 
 export default function Login() {
   const { applyAuth, fetchMe } = useAuth();
@@ -66,9 +67,9 @@ export default function Login() {
     <div className="flex min-h-screen items-center justify-center bg-[var(--color-bg)] px-4 py-12">
       <div className="w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center gap-3 text-center">
-          <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[var(--color-accent)] text-base font-bold text-white">
-            N
-          </div>
+          <Link to="/" className="flex items-center">
+            <img src={logoSrc} alt="IdeaNexus" className="h-16 w-auto object-contain" />
+          </Link>
           <h1 className="text-xl font-semibold">Welcome back</h1>
           <p className="text-sm text-[var(--color-text-muted)]">
             Log in to continue your diligence interview.

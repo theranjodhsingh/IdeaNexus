@@ -19,7 +19,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-30 border-b border-[var(--color-border)] bg-[var(--color-bg)]/80 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6">
         <Link to="/dashboard" className="flex items-center">
-          <img src={logoSrc} alt="IdeaNexus" className="h-8 w-auto object-contain" />
+          <img src={logoSrc} alt="IdeaNexus" className="h-12 w-auto object-contain" />
         </Link>
 
         <div className="flex items-center gap-3">

@@ -34,7 +34,7 @@ export default function Landing() {
     <div className="nexus-hero-gradient min-h-screen w-full">
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6">
         <Link to="/" className="flex items-center">
-          <img src={logoSrc} alt="IdeaNexus" className="h-8 w-auto object-contain" />
+          <img src={logoSrc} alt="IdeaNexus" className="h-16 w-auto object-contain" />
         </Link>
         <Link to="/login">
           <Button variant="secondary" size="sm" leftIcon={<LogIn className="h-4 w-4" />}>
@@ -118,7 +118,7 @@ export default function Landing() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.4, delay: idx * 0.08 }}
-                  className="nexus-card flex flex-col gap-3"
+                  className="nexus-card flex flex-col gap-3 p-6"
                 >
                   <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[var(--color-accent-soft)] text-[var(--color-accent)]">
                     <Icon className="h-5 w-5" />
@@ -137,7 +137,7 @@ export default function Landing() {
       <footer className="border-t border-[var(--color-border)]">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-3 px-6 py-6 text-xs text-[var(--color-text-muted)] sm:flex-row">
           <div className="flex items-center">
-            <img src={logoSrc} alt="IdeaNexus" className="h-6 w-auto object-contain" />
+            <img src={logoSrc} alt="IdeaNexus" className="h-10 w-auto object-contain" />
           </div>
           <span>© {new Date().getFullYear()} IdeaNexus. All rights reserved.</span>
         </div>
