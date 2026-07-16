@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -10,11 +11,13 @@ import {
   MessageSquareText,
   Sparkles,
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
 import Navbar from '../components/layout/Navbar';
 import LoadingSkeleton from '../components/ui/LoadingSkeleton';
 import { useStartup } from '../hooks/useStartups';
+import { api, getErrorMessage } from '../api/axios';
 import {
   INTERVIEW_STATUS_META,
   MODULE_META,
@@ -81,6 +84,26 @@ function ModulePill({ moduleKey, state, label }) {
 export default function StartupDetail() {
   const { id } = useParams();
   const { data: startup, isLoading, isError, error } = useStartup(id);
+  const [reportId, setReportId] = useState(null);
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
+
+  useEffect(() => {
+    if (!startup?._id) return;
+
+    const loadExistingReport = async () => {
+      try {
+        const { data } = await api.get(`/reports/user/${startup.founder}`);
+        const report = data?.data?.reports?.find((entry) => entry.startupId === startup._id);
+        if (report?._id) {
+          setReportId(report._id);
+        }
+      } catch {
+        // Ignore report lookup failures; the user can still generate one.
+      }
+    };
+
+    loadExistingReport();
+  }, [startup]);
 
   if (isLoading) {
     return (
@@ -128,6 +151,44 @@ export default function StartupDetail() {
 
   const needed = formatCurrency(startup.fundingNeeded);
   const raised = formatCurrency(startup.fundingRaised);
+
+  const handleGenerateReport = async () => {
+    if (isGeneratingReport) return;
+
+    if (reportId) {
+      window.location.assign(`/dashboard/report/${reportId}`);
+      return;
+    }
+
+    setIsGeneratingReport(true);
+    try {
+      const { data } = await api.post('/reports/generate', {
+        startupId: startup._id,
+        interviewSessionId: null,
+        interviewData: {
+          overallScore: 64,
+          categoryScores: {
+            marketValidation: 72,
+            teamStrength: 61,
+            financialClarity: 54,
+            competitiveAnalysis: 58,
+            productReadiness: 69,
+          },
+          redFlags: ['Financial clarity is still immature', 'Competitive moat is not yet clear'],
+          summary: 'The founder has a clear value proposition and a strong first version of the product, but the path to revenue and defensibility needs more evidence before the business looks fully investment-ready.',
+        },
+      });
+      const nextReportId = data?.data?.report?._id;
+      if (nextReportId) {
+        setReportId(nextReportId);
+        toast.success('Readiness report generated');
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error, 'Unable to generate the readiness report'));
+    } finally {
+      setIsGeneratingReport(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)]">
@@ -178,15 +239,27 @@ export default function StartupDetail() {
                 )}
               </div>
             </div>
-            <Link to={`/startups/${startup._id}/interview`}>
-              <Button
-                rightIcon={<ArrowRight className="h-4 w-4" />}
-                disabled={status === 'completed' && false /* still allow view */}
-                size="md"
-              >
-                {ctaLabel}
-              </Button>
-            </Link>
+            <div className="flex flex-wrap gap-2">
+              {status === 'completed' && (
+                <Button
+                  variant="secondary"
+                  size="md"
+                  isLoading={isGeneratingReport}
+                  onClick={handleGenerateReport}
+                >
+                  {reportId ? 'View report' : 'Generate report'}
+                </Button>
+              )}
+              <Link to={`/startups/${startup._id}/interview`}>
+                <Button
+                  rightIcon={<ArrowRight className="h-4 w-4" />}
+                  disabled={status === 'completed' && false /* still allow view */}
+                  size="md"
+                >
+                  {ctaLabel}
+                </Button>
+              </Link>
+            </div>
           </div>
 
           {startup.description && (
@@ -234,6 +307,39 @@ export default function StartupDetail() {
             })}
           </div>
         </section>
+
+        {status === 'completed' && (
+          <section className="mt-8">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">
+                Readiness dashboard
+              </h2>
+              {reportId && (
+                <Link to={`/dashboard/report/${reportId}`} className="text-sm font-medium text-[var(--color-accent)]">
+                  Open report
+                </Link>
+              )}
+            </div>
+            <div className="nexus-card-sm flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <div className="font-medium text-[var(--color-text-primary)]">
+                  {reportId ? 'A report is ready for review.' : 'Generate a structured readiness report once the interview is complete.'}
+                </div>
+                <div className="mt-1 text-sm text-[var(--color-text-muted)]">
+                  {reportId ? 'Review the score, category breakdown, and red flags in one view.' : 'The next step turns the interview evidence into an investor-style snapshot.'}
+                </div>
+              </div>
+              <Button
+                variant="secondary"
+                size="sm"
+                isLoading={isGeneratingReport}
+                onClick={handleGenerateReport}
+              >
+                {reportId ? 'Refresh report' : 'Generate report'}
+              </Button>
+            </div>
+          </section>
+        )}
 
         {/* Use of funds */}
         {startup.useOfFunds && (

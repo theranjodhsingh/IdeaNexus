@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import StartupCreate from './pages/StartupCreate';
 import StartupDetail from './pages/StartupDetail';
+import ReadinessReportPage from './pages/ReadinessReportPage';
 import useAuthStore from './store/authStore';
 import { useAuth } from './hooks/useAuth';
 
@@ -86,6 +87,14 @@ function AppShell() {
           element={
             <ProtectedRoute>
               <Interview />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/report/:id"
+          element={
+            <ProtectedRoute>
+              <ReadinessReportPage />
             </ProtectedRoute>
           }
         />
