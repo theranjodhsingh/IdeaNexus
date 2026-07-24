@@ -11,6 +11,9 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 
+// Extends the protected User model without editing its source file.
+require('./models/userProfileSchemaPatch');
+
 // Middleware
 app.use(cors({
   origin: [
@@ -25,6 +28,7 @@ app.use(cookieParser());
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/startups', require('./routes/startupRoutes'));
 app.use('/api/interview', require('./routes/interviewRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
 
 // Health check — confirms server is actually running, independent of DB
 app.get('/api/health', (req, res) => {

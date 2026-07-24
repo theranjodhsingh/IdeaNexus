@@ -12,6 +12,7 @@ import Register from './pages/Register';
 import StartupCreate from './pages/StartupCreate';
 import StartupDetail from './pages/StartupDetail';
 import ReadinessReportPage from './pages/ReadinessReportPage';
+import Profile from './pages/Profile';
 import useAuthStore from './store/authStore';
 import { useAuth } from './hooks/useAuth';
 
@@ -63,6 +64,14 @@ function AppShell() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

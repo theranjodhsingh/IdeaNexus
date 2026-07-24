@@ -24,9 +24,16 @@ export default function Navbar() {
 
         <div className="flex items-center gap-3">
           {user && (
-            <span className="hidden text-sm text-[var(--color-text-muted)] sm:inline">
-              {user.name}
-            </span>
+            <Link to="/profile" className="flex items-center gap-2 rounded-full nexus-focus" aria-label="Open profile">
+              {user.profilePictureUrl ? (
+                <img src={user.profilePictureUrl} alt="" className="h-8 w-8 rounded-full border border-[var(--color-border-strong)] object-cover" />
+              ) : (
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-accent-soft)] text-xs font-semibold text-[var(--color-accent)]">
+                  {user.name?.trim()?.charAt(0)?.toUpperCase() || 'U'}
+                </span>
+              )}
+              <span className="hidden text-sm text-[var(--color-text-muted)] sm:inline">{user.name}</span>
+            </Link>
           )}
           <Button
             variant="secondary"
